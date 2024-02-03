@@ -1,3 +1,7 @@
+# Web
 fastapi==0.109.0
 uvicorn==0.27.0
+# DB
 psycopg2-binary==2.9.9
+# ML
+pyhealth==1.1.4
