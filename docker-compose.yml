@@ -1,0 +1,10 @@
+version: '1'
+services:
+  db:
+    build: ./db
+    expose:
+      - "4747"
+    ports:
+      - "4747"
+  backend:
+    build: ./backend
