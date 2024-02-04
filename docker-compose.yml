@@ -1,10 +1,54 @@
-version: '1'
+version: '3.7'
 services:
-  db:
-    build: ./db
-    expose:
-      - "4747"
-    ports:
-      - "4747"
   backend:
     build: ./backend
+    ports:
+      - "8888:80"
+    networks:
+      - postgres
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      # CONTAINR_HOSTNAME: ${CONTAINER_HOSTNAME:-postgres}
+      POSTGRES_DB_NAME: mimic
+      POSTGRES_USER: mimic
+      POSTGRES_PASSWORD: password
+      MIMIC_PASSWORD: ${MIMIC_PASSWORD:-password}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ./main.sql:/docker-entrypoint-initdb.d/main.sql
+      - ${MIMIC_DATA_DIR-./database/MIMICData}:/var/lib/postgresql/mdata
+    ports:
+      - "4747:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    # command: /bin/bash -c "until pg_isready -U ${POSTGRES_USER} -p 5432; do sleep 1; done; psql -U ${POSTGRES_USER} -c 'CREATE DATABASE ${POSTGRES_DB_NAME};'"
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #   volumes:
+  #      - pgadmin:/root/.pgadmin
+  #   ports:
+  #     - "${PGADMIN_PORT:-5050}:80"
+  #   networks:
+  #     - postgres
+  #   restart: unless-stopped  
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    db:
+    # pgadmin:

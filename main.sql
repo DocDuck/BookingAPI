@@ -1,3 +1,4 @@
+\cd var/lib/postgresql/mdata/
 DROP SCHEMA IF EXISTS mimic; CREATE SCHEMA mimic;
 
 -- -------------------------------------------------------------------------------
@@ -22,7 +23,6 @@ DROP SCHEMA IF EXISTS mimic; CREATE SCHEMA mimic;
    to have Docker mount a host volume to the container path /mimic_data
    as explained in the README file
 */
-
 
 --------------------------------------------------------
 --  DDL for Table ADMISSIONS
@@ -616,7 +616,7 @@ CREATE TABLE TRANSFERS
 
 
 
-\copy D_CPT from PROGRAM 'gzip -dc D_CPT.csv.gz' delimiter ',' csv header NULL '';
+\copy D_CPT from PROGRAM './mdata gzip -dc D_CPT.csv.gz' delimiter ',' csv header NULL '';
 
 
 
