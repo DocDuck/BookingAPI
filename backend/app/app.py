@@ -2,35 +2,25 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 import psycopg2
 
+conn_string="postgresql://mimic:password@localhost:4747/mimic"
 app = FastAPI()
 
 @app.get("/")
 def hello():
     return "hello, doctor!"
 
-@app.get("/patients", response_class=FileResponse)
+@app.get("/admissions", response_class=FileResponse)
 def all_patients():
-    try:
-        conn = psycopg2.connect(
-            dbname="mimic",
-            user="mimic",
-            password="password",
-            host="127.0.0.1",
-            port="5432"
-        )
-        cursor = conn.cursor()
-        cursor.execute(
+    cursor = connectdb()
+    cursor.execute(
             """
-            SELECT * FROM mimic.patients
+            SELECT * FROM mimic.admissions
             """
         )
-        cursor.fetchall()
-    except Exception as err:
-        print(err)
+    return cursor.fetchall() 
 
 def connectdb():
     # Define our connection string
-    conn_string = "dbname='mimic'  user='elsa'"
     print("Connecting to database: ", conn_string)
 
     # get a connection, if a connect cannot be made an exception will be raised here
@@ -48,7 +38,7 @@ def connectdb():
         return None
 
 
-if __name__ == "__main__":
-    c = connectdb()
+# if __name__ == "__main__":
+#     c = connectdb()
 
 

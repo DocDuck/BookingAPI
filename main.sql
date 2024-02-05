@@ -1,4 +1,4 @@
-\cd var/lib/postgresql/mdata/
+\cd ../var/lib/postgresql/mdata/
 DROP SCHEMA IF EXISTS mimic; CREATE SCHEMA mimic;
 
 -- -------------------------------------------------------------------------------
