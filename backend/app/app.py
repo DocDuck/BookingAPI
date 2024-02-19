@@ -1,21 +1,8 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from datetime import datetime
 from fastapi import FastAPI
-from pydantic import BaseModel
-from typing import Optional, List
-
-class Patient(BaseModel):
-    row_id: int #245
-    subject_id: int #262
-    gender: str #"M"
-    dob: datetime # Date of birth.
-    dod: Optional[datetime] = None # Date of death. Null if the patient was alive at least 90 days post hospital discharge.
-    dod_hosp: Optional[datetime] = None # Date of death recorded in the hospital records.
-    dod_ssn: Optional[datetime] = None # Date of death recorded in the social security records.
-    expire_flag: int = 0 # Flag indicating that the patient has died. (0 or 1)
-    class Config:
-        orm_mode = True
+from typing import List
+from .schemas import Patient, Admission
 
 conn_string="postgresql://mimic:password@localhost:4747/mimic"
 app = FastAPI()
@@ -36,7 +23,7 @@ def all_patients():
         )
     return cursor.fetchall()
 
-@app.get("/admissions")
+@app.get("/admissions", response_model=List[Admission])
 def all_admissions():
     conn = psycopg2.connect(conn_string, cursor_factory=RealDictCursor)
     cursor = conn.cursor()

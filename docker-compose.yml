@@ -20,7 +20,7 @@ services:
       PGDATA: /var/lib/postgresql/data
     volumes:
       - ./main.sql:/docker-entrypoint-initdb.d/main.sql
-      - ${MIMIC_DATA_DIR-./database/MIMICData}:/var/lib/postgresql/mdata
+      - ${MIMIC_DATA_DIR-./.db_data/MIMICData}:/var/lib/postgresql/mdata
     ports:
       - "4747:5432" 
     restart: unless-stopped
