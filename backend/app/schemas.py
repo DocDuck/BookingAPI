@@ -101,6 +101,21 @@ class Cptevents(BaseModel):
     class Config:
         orm_mode = True
 
+# High-level dictionary of the Current Procedural Terminology.
+class D_cpt(BaseModel):
+    row_id: int # Unique row identifier.
+    category: int # Code category
+    sectionrange: str # Range of codes within the high-level section.
+    sectionheader: str # Section header.
+    subsectionrange: str # Range of codes within the subsection.
+    subsectionheader: str # Subsection header.
+    codesuffix: Optional[str] = None # Text element of the Current Procedural Terminology, if any.
+    mincodeinsubsection: int # Minimum code within the subsection.
+    maxcodeinsubsection: int # Maximum code within the subsection.
+    class Config:
+            orm_mode = True
+    
+
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
     row_id: int # Unique row identifier.
