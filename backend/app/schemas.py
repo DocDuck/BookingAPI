@@ -115,6 +115,15 @@ class D_cpt(BaseModel):
     class Config:
         orm_mode = True
     
+# Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).
+# МКБ-9
+class D_icd_diagnoses:
+    row_id: int # Unique row identifier.
+    icd9_code: str # ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.
+    short_title: str # Short title associated with the code.
+    long_title: str # Long title associated with the code.
+    class Config:
+        orm_mode = True
 
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
