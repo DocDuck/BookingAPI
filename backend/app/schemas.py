@@ -113,7 +113,7 @@ class D_cpt(BaseModel):
     mincodeinsubsection: int # Minimum code within the subsection.
     maxcodeinsubsection: int # Maximum code within the subsection.
     class Config:
-            orm_mode = True
+        orm_mode = True
     
 
 # Patients associated with an admission to the ICU.
