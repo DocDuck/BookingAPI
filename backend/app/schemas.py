@@ -63,10 +63,30 @@ class Caregivers(BaseModel):
     class Config:
         orm_mode = True
 
+# Events occuring on a patient chart. (Записи в карте пациента)
+class Chartevents(BaseModel):
+    row_id: int # Unique row identifier.
+    subject_id: int # Foreign key. Identifies the patient. (parent: patients)
+    hadm_id: Optional[int] = None # Foreign key. Identifies the hospital stay. (parent: admissions)
+    icustay_id: Optional[int] = None # Foreign key. Identifies the ICU stay. (parent: icustays)
+    itemid: Optional[int] = None # Foreign key. Identifies the charted item. (parent: d_items)
+    charttime: Optional[datetime] = None # Time when the event occured.
+    storetime: Optional[datetime] = None # Time when the event was recorded in the system.
+    cgid: Optional[int] = None # Foreign key. Identifies the caregiver. (parent: caregivers)
+    value: Optional[str] = None # Value of the event as a text string.
+    valuenum: Optional[float] = None # Value of the event as a number.
+    valueuom: Optional[str] = None # Unit of measurement.
+    warning: Optional[int] = None # Flag to highlight that the value has triggered a warning.
+    error: Optional[int] = None # Flag to highlight an error with the event.
+    resultstatus: Optional[str] = None # Result status of lab data.
+    stopped: Optional[str] = None # Text string indicating the stopped status of an event (i.e. stopped, not stopped).
+    class Config:
+            orm_mode = True
+
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
     row_id: int # Unique row identifier.
-    subject_id: int #262
+    subject_id: int # Primary key. Identifies the patient.
     gender: str # Gender M or F
     dob: datetime # Date of birth.
     dod: Optional[datetime] = None # Date of death. Null if the patient was alive at least 90 days post hospital discharge.
