@@ -54,11 +54,20 @@ class Callout(BaseModel):
     class Config:
             orm_mode = True
 
+# List of caregivers associated with an ICU stay.
+class Caregivers(BaseModel):
+    row_id: int # Unique row identifier.
+    cgid: int # Unique caregiver identifier.
+    label: Optional[str] = None # Title of the caregiver, for example MD or RN.
+    description: Optional[str] = None # More detailed description of the caregiver, if available.
+    class Config:
+        orm_mode = True
+
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
-    row_id: int #245
+    row_id: int # Unique row identifier.
     subject_id: int #262
-    gender: str #"M"
+    gender: str # Gender M or F
     dob: datetime # Date of birth.
     dod: Optional[datetime] = None # Date of death. Null if the patient was alive at least 90 days post hospital discharge.
     dod_hosp: Optional[datetime] = None # Date of death recorded in the hospital records.
