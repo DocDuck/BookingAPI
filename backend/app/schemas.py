@@ -64,6 +64,7 @@ class Caregivers(BaseModel):
         orm_mode = True
 
 # Events occuring on a patient chart. (Записи в карте пациента)
+# Есть побочные таблицы Chartevents_1 - Chartevents_10, не вызываются напрямую
 class Chartevents(BaseModel):
     row_id: int # Unique row identifier.
     subject_id: int # Foreign key. Identifies the patient. (parent: patients)
@@ -82,6 +83,23 @@ class Chartevents(BaseModel):
     stopped: Optional[str] = None # Text string indicating the stopped status of an event (i.e. stopped, not stopped).
     class Config:
             orm_mode = True
+
+# Events recorded in Current Procedural Terminology.
+class Cptevents(BaseModel):
+    row_id: int # Unique row identifier.
+    subject_id: int # Foreign key. Identifies the patient. (parent: patients)
+    hadm_id: int # Foreign key. Identifies the hospital stay. (parent: admissions)
+    costcenter: str # Center recording the code, for example the ICU or the respiratory unit.
+    chartdate: Optional[datetime] = None # Date when the event occured, if available.
+    cpt_cd: str # Current Procedural Terminology code.
+    cpt_number: Optional[int] = None # Numerical element of the Current Procedural Terminology code.
+    cpt_suffix: Optional[str] = None # Text element of the Current Procedural Terminology, if any. Indicates code category.
+    ticket_id_seq: Optional[int] = None # Sequence number of the event, derived from the ticket ID.
+    sectionheader: Optional[str] = None # High-level section of the Current Procedural Terminology code.
+    subsectionheader: Optional[str] = None # Subsection of the Current Procedural Terminology code.
+    description: Optional[str] = None # Description of the Current Procedural Terminology, if available.
+    class Config:
+        orm_mode = True
 
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
