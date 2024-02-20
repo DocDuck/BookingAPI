@@ -116,8 +116,18 @@ class D_cpt(BaseModel):
         orm_mode = True
     
 # Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).
-# МКБ-9
+# МКБ-9 словарь диагнозов
 class D_icd_diagnoses:
+    row_id: int # Unique row identifier.
+    icd9_code: str # ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.
+    short_title: str # Short title associated with the code.
+    long_title: str # Long title associated with the code.
+    class Config:
+        orm_mode = True
+
+# Dictionary of the International Classification of Diseases, 9th Revision (Procedures).
+# МКБ-9 словарь процедур
+class D_icd_procedures:
     row_id: int # Unique row identifier.
     icd9_code: str # ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.
     short_title: str # Short title associated with the code.
