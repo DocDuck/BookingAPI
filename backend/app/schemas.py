@@ -162,6 +162,25 @@ class D_labitems(BaseModel):
     class Config:
         orm_mode = True
 
+# Events relating to a datetime.
+class Datetimeevents(BaseModel):
+    row_id: int # Unique row identifier.
+    subject_id: int # Foreign key. Identifies the patient. (parent: patients)
+    hadm_id: Optional[int] = None # Foreign key. Identifies the hospital stay. (parent: admissions)
+    icustay_id: Optional[int] = None # Foreign key. Identifies the ICU stay. (parent: icustays)
+    itemid: int # Foreign key. Identifies the charted item. (parent: d_items)
+    charttime: datetime # Time when the event occured.
+    storetime: datetime # Time when the event was recorded in the system.
+    cgid: int # Foreign key. Identifies the caregiver. (parent: caregivers)
+    value: Optional[str] = None # Value of the event as a text string.
+    valueuom: str # Unit of measurement.
+    warning: Optional[int] = None # Flag to highlight that the value has triggered a warning.
+    error: Optional[int] = None # Flag to highlight an error with the event.
+    resultstatus: Optional[str] = None # Result status of lab data.
+    stopped: Optional[str] = None # Event was explicitly marked as stopped. Infrequently used by caregivers.
+    class Config:
+            orm_mode = True
+
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
     row_id: int # Unique row identifier.
