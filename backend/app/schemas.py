@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 # Hospital admissions associated with an ICU stay.
+# Госпитализации в отделение интенсивной терапии.
 class Admission(BaseModel):
     row_id: int # Unique row identifier.
     subject_id: int # Foreign key. Identifies the patient.
@@ -135,7 +136,7 @@ class D_icd_procedures(BaseModel):
     class Config:
         orm_mode = True
 
-# Dictionary of non-laboratory-related charted items. 
+# Dictionary of non-laboratory-related charted items.
 class D_items(BaseModel):
     row_id: int # Unique row identifier.
     itemid: int # Primary key. Identifies the charted item.
@@ -147,6 +148,17 @@ class D_items(BaseModel):
     unitname: Optional[str] = None # Unit associated with the item.
     param_type: Optional[str] = None # Type of item, for example solution or ingredient.
     conceptid: Optional[int] = None # Identifier used to harmonize concepts identified by multiple ITEMIDs. CONCEPTIDs are planned but not yet implemented (all values are NULL).
+    class Config:
+        orm_mode = True
+
+# Dictionary of laboratory-related items.
+class D_labitems(BaseModel):
+    row_id: int # Unique row identifier.
+    itemid: int # Foreign key. Identifies the charted item.
+    label: str # Label identifying the item.
+    fluid: str # Fluid associated with the item, for example blood or urine.
+    category: str # Category of item, for example chemistry or hematology.
+    loinc_code: Optional[str] = None # Logical Observation Identifiers Names and Codes (LOINC) mapped to the item, if available.
     class Config:
         orm_mode = True
 
