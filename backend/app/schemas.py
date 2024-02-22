@@ -117,7 +117,7 @@ class D_cpt(BaseModel):
     
 # Dictionary of the International Classification of Diseases, 9th Revision (Diagnoses).
 # МКБ-9 словарь диагнозов
-class D_icd_diagnoses:
+class D_icd_diagnoses(BaseModel):
     row_id: int # Unique row identifier.
     icd9_code: str # ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.
     short_title: str # Short title associated with the code.
@@ -127,11 +127,26 @@ class D_icd_diagnoses:
 
 # Dictionary of the International Classification of Diseases, 9th Revision (Procedures).
 # МКБ-9 словарь процедур
-class D_icd_procedures:
+class D_icd_procedures(BaseModel):
     row_id: int # Unique row identifier.
     icd9_code: str # ICD9 code - note that this is a fixed length character field, as whitespaces are important in uniquely identifying ICD-9 codes.
     short_title: str # Short title associated with the code.
     long_title: str # Long title associated with the code.
+    class Config:
+        orm_mode = True
+
+# Dictionary of non-laboratory-related charted items. 
+class D_items(BaseModel):
+    row_id: int # Unique row identifier.
+    itemid: int # Primary key. Identifies the charted item.
+    label: Optional[str] = None # Label identifying the item.
+    abbreviation: Optional[str] = None # Abbreviation associated with the item.
+    dbsource: Optional[str] = None # Source database of the item.
+    linksto: Optional[str] = None # Table which contains data for the given ITEMID.
+    category: Optional[str] = None # Category of data which the concept falls under.
+    unitname: Optional[str] = None # Unit associated with the item.
+    param_type: Optional[str] = None # Type of item, for example solution or ingredient.
+    conceptid: Optional[int] = None # Identifier used to harmonize concepts identified by multiple ITEMIDs. CONCEPTIDs are planned but not yet implemented (all values are NULL).
     class Config:
         orm_mode = True
 
