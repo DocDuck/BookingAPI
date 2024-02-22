@@ -181,6 +181,16 @@ class Datetimeevents(BaseModel):
     class Config:
             orm_mode = True
 
+# Diagnoses relating to a hospital admission coded using the ICD9 system.
+class Diagnoses_icd(BaseModel):
+    row_id: int # Unique row identifier.
+    subject_id: int # Foreign key. Identifies the patient. (parent: patients)
+    hadm_id: int # Foreign key. Identifies the hospital stay. (parent: admissions)
+    seq_num: Optional[int] = None # Priority of the code. Sequence 1 is the primary code.
+    icd9_code: Optional[str] = None # ICD9 code for the diagnosis.
+    class Config:
+        orm_mode = True
+
 # Patients associated with an admission to the ICU.
 class Patient(BaseModel):
     row_id: int # Unique row identifier.
